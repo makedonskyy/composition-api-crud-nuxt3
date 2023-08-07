@@ -54,4 +54,18 @@ const listTemperature = computed(() => temperatureStore.data)
 const setStatus = (status: boolean) => temperatureStore.setStatus(status)
 const deleteTemperature = (item: TemperatureItem) => temperatureStore.deleteTemperature(item)
 
+const initData = () => temperatureStore.initializeData()
+
+const removeData = () => temperatureStore.removeData()
+
+onBeforeMount(() => {
+  initData()
+})
+
+onBeforeUnmount(() => {
+  removeData()
+}
+
+)
+
 </script>
