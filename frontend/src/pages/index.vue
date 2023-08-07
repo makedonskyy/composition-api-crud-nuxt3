@@ -10,9 +10,11 @@
           Значение температуры
         </div>
         <div class="col col-1">
-          <NuxtLink :to="`/${id}/edit`" @click="setStatus(false)">
-            Add
-          </NuxtLink>
+          <ButtonMain>
+            <NuxtLink :to="`/${id}/edit`" @click="setStatus(false)">
+              Add
+            </NuxtLink>
+          </ButtonMain>
         </div>
       </li>
       <li v-for="item in listTemperature" :key="item.id" class="table-row">
@@ -22,13 +24,30 @@
         <div class="col col-2" data-label="temperature">
           {{ item.temperature }}
         </div>
-        <div class="col col-1 flex" data-label="buttons">
-          <NuxtLink :to="`/${item.id}/edit`" @click="setStatus(true)">
-            Edit
-          </NuxtLink>
-          <button type="button" @click="deleteTemperature(item)">
-            Delete
-          </button>
+        <div class="col col-1 button_place" data-label="buttons">
+          <ButtonMain>
+            <NuxtLink :to="`/${item.id}/edit`" @click="setStatus(true)">
+              Edit
+            </NuxtLink>
+          </ButtonMain>
+
+          <ButtonMain type="button">
+            <a href="#modal-delete">Delete</a>
+          </ButtonMain>
+
+          <div id="modal-delete" class="modal">
+            <div class="modal__content">
+              <h1>Are you sure you want to delete this value?</h1>
+              <div class="button_place">
+                <ButtonMain style="background-color: red" type="button" @click="deleteTemperature(item)">
+                  Delete
+                </ButtonMain>
+                <ButtonMain>
+                  <a href="#" class="modal__close">Close</a>
+                </ButtonMain>
+              </div>
+            </div>
+          </div>
         </div>
       </li>
     </ul>
@@ -40,6 +59,7 @@ import { computed } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { useTemperatureStore } from '~/store/temperatureStore'
 import { TemperatureItem } from '~/types/types'
+import ButtonMain from '~/components/ui/ButtonMain.vue'
 
 // сразу генерируем id нового показания
 const id = ref(uuidv4())
@@ -56,16 +76,7 @@ const deleteTemperature = (item: TemperatureItem) => temperatureStore.deleteTemp
 
 const initData = () => temperatureStore.initializeData()
 
-const removeData = () => temperatureStore.removeData()
-
 onBeforeMount(() => {
   initData()
 })
-
-onBeforeUnmount(() => {
-  removeData()
-}
-
-)
-
 </script>

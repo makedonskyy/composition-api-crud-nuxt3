@@ -14,9 +14,31 @@
         >
         <label for="temperature" class="form__label">Temperature</label>
       </div>
-      <button type="submit">
-        Save
-      </button>
+      <div class="button_place button_margin">
+        <ButtonMain type="submit">
+          Save
+        </ButtonMain>
+
+        <ButtonMain type="button">
+          <a href="#modal-home">Go home</a>
+        </ButtonMain>
+
+        <div id="modal-home" class="modal">
+          <div class="modal__content">
+            <h1>Are you sure you don't want to save this value?</h1>
+            <div class="button_place">
+              <ButtonMain style="background-color: red" type="button">
+                <NuxtLink to="/">
+                  Don't save
+                </NuxtLink>
+              </ButtonMain>
+              <ButtonMain type="submit">
+                Save
+              </ButtonMain>
+            </div>
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 </template>
@@ -24,6 +46,7 @@
 <script setup lang="ts">
 
 import { TemperatureItem } from '~/types/types'
+import ButtonMain from '~/components/ui/ButtonMain.vue'
 
 const emit = defineEmits(['temperatureAddSubmit'])
 
@@ -55,3 +78,13 @@ function checkForm (e: Event) {
 }
 
 </script>
+
+<style scoped lang="scss">
+.button_margin {
+  margin-top: 10px;
+}
+
+h2{
+  color: white;
+}
+</style>

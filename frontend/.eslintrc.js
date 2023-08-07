@@ -8,6 +8,7 @@ module.exports = {
   plugins: [],
   rules: {
     'vue/no-multiple-template-root': 0,
-    '@typescript-eslint/no-var-requires': 0
+    '@typescript-eslint/no-var-requires': 0,
+    'no-console': 0
   }
 }

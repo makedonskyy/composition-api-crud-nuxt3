@@ -1,10 +1,16 @@
 <script setup lang="ts">
+import { useTemperatureStore } from '~/store/temperatureStore'
 
+const temperatureStore = useTemperatureStore()
+const removeData = () => temperatureStore.removeData()
+onBeforeUnmount(() => {
+  removeData()
+})
 </script>
 
 <template>
   <ClientOnly>
-    <div class="overflow-hidden xl:overflow-auto">
+    <div>
       <slot />
     </div>
   </ClientOnly>
