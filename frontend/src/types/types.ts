@@ -4,5 +4,7 @@ export type TemperatureItem = {
 }
 
 export interface TemperatureState {
-    readings: TemperatureItem[];
+    data: TemperatureItem[];
+    isLoading: boolean,
+    isCreating: boolean
 }

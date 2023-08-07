@@ -1,31 +1,41 @@
 import { defineStore } from 'pinia'
 import { TemperatureItem, TemperatureState } from '~/types/types'
 
-export const useTemperatureStore = defineStore('temperature', {
-  state: (): TemperatureState => ({
-    readings: JSON.parse(localStorage.getItem('temperatureData') || '[]' as string) as TemperatureItem[]
-  }),
+export const useTemperatureStore = defineStore('temperatureStore', {
+  state: (): TemperatureState => {
+    return {
+      data: [{ id: '123', temperature: '23' }] as TemperatureItem[],
+      isLoading: false,
+      isCreating: false
+    }
+  },
   actions: {
-    addReading (reading: TemperatureItem): void {
-      this.readings.unshift(reading)
-      this.updateLocalStorage()
+    // устанавливаем статус страницы -- добавление или редактирование
+    setStatus (status: boolean) {
+      this.isCreating = status
     },
-    updateReading (updatedReading: TemperatureItem): void {
-      const index: number = this.readings.findIndex(reading => reading.id === updatedReading.id)
-      if (index !== -1) {
-        this.readings.splice(index, 1, updatedReading)
-        this.updateLocalStorage()
+    // функция для получения текущего элемента
+    getItemTemperature (id: string) {
+      const res: TemperatureItem = this.data?.find(item => item.id === id) as TemperatureItem
+      if (res) {
+        return res
+      } else {
+        // если такой элемент не найден, то по умолчанию устанавливаем значение температуры как пустую строку
+        return { id, temperature: '' }
       }
     },
-    deleteReading (readingId: string): void {
-      const index: number = this.readings.findIndex(reading => reading.id === readingId)
-      if (index !== -1) {
-        this.readings.splice(index, 1)
-        this.updateLocalStorage()
-      }
+    // добавляем новую температуру в массив данных
+    addTemperature (item: TemperatureItem): void {
+      this.data ? this.data.push(item) : console.log('adding error')
     },
-    updateLocalStorage (): void {
-      localStorage.setItem('temperatureData', JSON.stringify(this.readings))
+    // изменяем температуру
+    editTemperature (item: TemperatureItem): void {
+      this.data
+        ? this.data.splice(this.data.indexOf(this.data.find(el => el.id === item.id) as TemperatureItem), 1, item)
+        : console.log('editing error')
+    },
+    deleteTemperature (item: TemperatureItem) {
+      this.data ? this.data.splice(this.data.indexOf(item), 1) : console.log('deleting error')
     }
   }
 })
